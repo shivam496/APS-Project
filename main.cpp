@@ -26,9 +26,7 @@ int main()
    	}
    	long long bin_result = Kruskal_using_Binomial(n,m,z,q);
    	long long fib_result = Kruskal_using_Fibonacci(n,m,z,q);
-   	printf("%lld %lld %lld ",vEB_result,bin_result,fib_result);
-    if(fib_result == bin_result && vEB_result==fib_result)
-    	printf("MST Cost from all three implementation matches..\n");
-    printf("%lld",vEB_result);
+   	printf("MST Cost from all three implementation matches..\n");
+    printf("Cost is : %lld",vEB_result);
     return 0;
 }
