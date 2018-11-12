@@ -1,5 +1,5 @@
 struct subset 
-{ 	int parent; 
+{   int parent; 
     int rank; 
 }; 
   
