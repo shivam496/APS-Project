@@ -1,39 +1,34 @@
 #include <bits/stdc++.h>
 using namespace std;
-#include "veb.h"
 #define ll long long
+#include "dsu.h"
+#include "veb.h"
+#include "fibonacci.h"
+#include "binomial.h"
 
 int main()
-{	long long n,m;
-	unordered_map< long long, pair<long long,vector<vector<long long>>>> q;
-	long long i;
-	scanf("%lld%lld",&n,&m);
-	vector<vector<long long>> z;
-	vector<long long> temp(3);
-	long long max=-1;
-	long long size[6]={2,4,16,256,65536,4294967296};
-	for(i=0;i<m;i++)
-	{	scanf("%lld%lld%lld",&temp[0],&temp[1],&temp[2]);
-		z.push_back(temp);
-		if(temp[2]>max)
-			max=temp[2];
-	}
-	for(i=0;i<6;i++)
-		if(size[i]>max)
-		{	max=size[i];
-			break;
-		}
-	vEB = new class vEB(max);
-    for(int i=0;i<m;i++)
-    {	vEB -> Insert(z[i][2]);
-    	q[z[i][2]].first++;
-    	q[z[i][2]].second.push_back(z[i]);
+{   
+    long long n,m,a,b,c;
+    unordered_map< long long, pair<long long,vector<vector<long long>>>> q;
+    long long i;
+    scanf("%lld%lld",&n,&m);
+    vector<long long> temp(3),z	;
+    for(i=0;i<m;i++)
+    {   scanf("%lld%lld%lld",&temp[0],&temp[1],&temp[2]);
+        z.push_back(temp[2]);
+        q[temp[2]].first++;
+        q[temp[2]].second.push_back(temp);
     }
-    // long long x=-1;
-    // for(int i=0;i<4;i++)
-    // {	x=*vEB->successor(x);
-    // 	cout<<x<<endl;
-    // }
-    kruskal(n,m,q);
+    long long vEB_result = Kruskal_using_vEB(n,m,z,q);
+   	if(vEB_result==-1)
+   	{	printf("No MST exists..\n");
+    	return 0;
+   	}
+   	long long bin_result = Kruskal_using_Binomial(n,m,z,q);
+   	long long fib_result = Kruskal_using_Fibonacci(n,m,z,q);
+   	printf("%lld %lld %lld ",vEB_result,bin_result,fib_result);
+    if(fib_result == bin_result && vEB_result==fib_result)
+    	printf("MST Cost from all three implementation matches..\n");
+    printf("%lld",vEB_result);
     return 0;
-}	
+}

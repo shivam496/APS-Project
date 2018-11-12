@@ -1,9 +1,3 @@
-#include <math.h>
-#include <iostream>
-using namespace std;
-#define ll long long
-#include "dsu.h"
-
 class vEB
 {       ll u;
         ll *minimum, *maximum;
@@ -78,7 +72,7 @@ void vEB::Insert(ll data)
                     cluster[hi] -> Insert(lo);
                     summary -> Insert(hi);
                 }
-                else 
+                else
                     cluster[hi] -> Insert(lo);
             }
         }
@@ -237,13 +231,13 @@ ll vEB::extractMin()
 
 vEB *vEB;
 
-void kruskal(long long n, long long m, unordered_map< long long, pair<long long,vector<vector<long long>>>> q)
-{   int V = n; 
-    vector<vector<long long>> result(V);
-    int e = 0; 
+long long kruskal_V(ll n, ll m, unordered_map< ll, pair<ll,vector<vector<ll>>>> q)
+{   ll V = n; 
+    vector<vector<ll>> result(V);
+    ll e = 0; 
     struct subset *subsets = (struct subset*) malloc( V * sizeof(struct subset) ); 
-    long long x =-1;
-    vector<long long> next_edge(3);
+    ll x =-1;
+    vector<ll> next_edge(3);
     
     for (ll i=0;i<V;i++) 
     {   subsets[i].parent = i; 
@@ -256,15 +250,35 @@ void kruskal(long long n, long long m, unordered_map< long long, pair<long long,
         q[x].first--; 
         next_edge = q[x].second[q[x].first];
         //cout<<next_edge[0]<<" "<<next_edge[1]<<" "<<next_edge[2]<<endl;
-        int x = find(subsets, next_edge[0]); 
-        int y = find(subsets, next_edge[1]); 
+        ll x = find(subsets, next_edge[0]); 
+        ll y = find(subsets, next_edge[1]); 
         if (x != y) 
         {   result[e++] = next_edge; 
             Union(subsets, x, y); 
         } 
-    } 
-    printf("Following are the edges included the constructed MST in sorted order..\n"); 
+    }
+    //printf("Following are the edges included the constructed MST in sorted order..\n"); 
+    ll s=0;
     for (ll i=0;i<e;i++) 
-        printf("%lld -- %lld == %lld\n", result[i][0], result[i][1], result[i][2]); 
-    return;
+    {   // printf("%lld -- %lld == %lld\n", result[i][0], result[i][1], result[i][2]); 
+        s+=result[i][2];
+    }
+    //cout<<e<<endl;
+    return s;
+}
+
+long long Kruskal_using_vEB(ll n,ll m,vector<ll> data,unordered_map< ll, pair<ll,vector<vector<ll>>>> q)
+{   ll i,size[6]={2,4,16,256,65536,4294967296},max=-1;
+    for(i=0;i<m;i++)
+        if(data[i]>max)
+            max=data[i];
+    for(i=0;i<6;i++)
+        if(size[i]>max)
+        {   max=size[i];
+            break;
+        }
+    vEB = new class vEB(max);
+    for(ll i=0;i<m;i++)
+        vEB -> Insert(data[i]);
+    return kruskal_V(n,m,q);
 }
